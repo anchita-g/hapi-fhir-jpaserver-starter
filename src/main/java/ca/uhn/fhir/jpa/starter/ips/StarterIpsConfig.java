@@ -21,8 +21,8 @@ public class StarterIpsConfig {
 	}
 
 	@Bean
-	public IpsOperationProvider IpsOperationProvider(IIpsGeneratorSvc theIpsGeneratorSvc){
-		return new IpsOperationProvider(theIpsGeneratorSvc);
+	public IpsOperationProvider OhsIpsOperationProvider(IIpsGeneratorSvc theIpsGeneratorSvc, DaoRegistry theDaoRegistry, FhirContext fhirContext){
+		return new OhsIpsOperationProvider(theIpsGeneratorSvc, theDaoRegistry, fhirContext.newJsonParser());
 	}
 
 	@Bean
