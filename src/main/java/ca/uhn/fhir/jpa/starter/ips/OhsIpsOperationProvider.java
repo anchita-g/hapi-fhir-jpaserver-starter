@@ -13,13 +13,14 @@ import ca.uhn.fhir.rest.api.server.IBundleProvider;
 import ca.uhn.fhir.rest.api.server.RequestDetails;
 import ca.uhn.fhir.rest.param.ReferenceParam;
 import ca.uhn.fhir.rest.param.TokenParam;
-import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.DocumentReference;
 import org.hl7.fhir.r4.model.ResourceType;
+
+import java.util.Base64;
 
 public class OhsIpsOperationProvider extends IpsOperationProvider {
 
@@ -51,8 +52,9 @@ public class OhsIpsOperationProvider extends IpsOperationProvider {
 			return new Bundle();
 		}
 		DocumentReference dr = (DocumentReference)searchResults.getResources(0, 1).get(0);
-		String ips = new String(dr.getContent().get(0).getAttachment().getData());
-		return  (Bundle)jsonParser.parseResource(ips);
+		byte[] encodedIps = dr.getContent().get(0).getAttachment().getData();
+		String decodeIps = new String(Base64.getDecoder().decode(encodedIps));
+		return  (Bundle)jsonParser.parseResource(decodeIps);
 	}
 
 }
